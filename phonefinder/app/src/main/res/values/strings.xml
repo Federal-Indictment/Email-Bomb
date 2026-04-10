@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Phone Finder</string>
+    <string name="status_listening">Listening for your voice…</string>
+    <string name="status_off">Phone Finder is off</string>
+    <string name="btn_enable">Enable Listener</string>
+    <string name="btn_disable">Disable Listener</string>
+    <string name="btn_stop_alarm">Stop Alarm</string>
+    <string name="notification_title">Phone Finder Active</string>
+    <string name="notification_text">Listening for "where\'s my phone"</string>
+    <string name="notification_stop">Stop</string>
+    <string name="permission_rationale">Phone Finder needs microphone access to hear your voice commands.</string>
+    <string name="battery_opt_title">Disable Battery Optimization</string>
+    <string name="battery_opt_message">For reliable always-on listening, please exempt Phone Finder from battery optimization.</string>
+    <string name="battery_opt_go">Open Settings</string>
+    <string name="battery_opt_skip">Later</string>
+</resources>

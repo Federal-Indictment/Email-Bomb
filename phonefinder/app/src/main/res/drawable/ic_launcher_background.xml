@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Background layer: diagonal dark-purple → electric-purple gradient
+  with a soft radial glow in the centre for depth.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Diagonal gradient fill -->
+    <path android:pathData="M0,0 L108,0 L108,108 L0,108 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="0"
+                android:startY="0"
+                android:endX="108"
+                android:endY="108"
+                android:type="linear">
+                <item android:offset="0"   android:color="#0D001A"/>
+                <item android:offset="0.5" android:color="#2D0B6B"/>
+                <item android:offset="1"   android:color="#6C2FF4"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Soft radial glow from centre -->
+    <path android:pathData="M14,54 A40,40 0 0 1 94,54 A40,40 0 0 1 14,54 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:centerX="54"
+                android:centerY="54"
+                android:gradientRadius="40"
+                android:type="radial">
+                <item android:offset="0"   android:color="#447B2FFF"/>
+                <item android:offset="1"   android:color="#00000000"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+
+</vector>

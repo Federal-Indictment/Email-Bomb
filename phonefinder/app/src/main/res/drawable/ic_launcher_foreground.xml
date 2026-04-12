@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Foreground layer for the adaptive launcher icon.
+  Canvas is 108x108dp; safe zone (guaranteed visible) is the centre 72x72dp (18-90).
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Microphone capsule body -->
+    <path
+        android:pathData="M44,36 A10,10 0 0 1 64,36 L64,60 A10,10 0 0 1 44,60 Z"
+        android:fillColor="#FFFFFF"/>
+
+    <!-- Microphone stand (U-shape) -->
+    <path
+        android:pathData="M38,58 Q38,80 54,80 Q70,80 70,58"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"/>
+
+    <!-- Vertical pole -->
+    <path
+        android:pathData="M54,80 L54,88"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"/>
+
+    <!-- Base -->
+    <path
+        android:pathData="M44,88 L64,88"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="4"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"/>
+
+    <!-- Sound wave right (close) -->
+    <path
+        android:pathData="M70,42 Q80,54 70,66"
+        android:strokeColor="#CCFFFFFF"
+        android:strokeWidth="3.5"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"/>
+
+    <!-- Sound wave right (far) -->
+    <path
+        android:pathData="M78,34 Q92,54 78,74"
+        android:strokeColor="#80FFFFFF"
+        android:strokeWidth="3"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"/>
+
+    <!-- Sound wave left (close) -->
+    <path
+        android:pathData="M38,42 Q28,54 38,66"
+        android:strokeColor="#CCFFFFFF"
+        android:strokeWidth="3.5"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"/>
+
+    <!-- Sound wave left (far) -->
+    <path
+        android:pathData="M30,34 Q16,54 30,74"
+        android:strokeColor="#80FFFFFF"
+        android:strokeWidth="3"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"/>
+
+</vector>

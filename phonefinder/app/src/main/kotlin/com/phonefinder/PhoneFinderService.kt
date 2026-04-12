@@ -6,7 +6,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
-import android.os.HandlerThread
 import android.os.IBinder
 import android.os.PowerManager
 import androidx.core.app.NotificationCompat
@@ -14,7 +13,7 @@ import androidx.core.app.NotificationCompat
 /**
  * Foreground service that keeps the voice detection engine running at all times,
  * including when the screen is off. Returns START_STICKY so the OS restarts it
- * if it is killed due to memory pressure.
+ * if killed due to memory pressure.
  */
 class PhoneFinderService : Service() {
 
@@ -28,12 +27,11 @@ class PhoneFinderService : Service() {
     private lateinit var wakeLock: PowerManager.WakeLock
     private lateinit var audioEngine: AudioListenerEngine
     private lateinit var alarmController: AlarmController
-    private lateinit var speechThread: HandlerThread
 
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
-        // Must call startForeground() within 5–10 s of onCreate() or the OS will ANR/crash
+        // Must call startForeground() within 5-10 s of onCreate() or the OS will crash the app
         startForeground(NOTIFICATION_ID, buildNotification())
 
         // PARTIAL_WAKE_LOCK keeps the CPU running when the screen is off
@@ -41,15 +39,11 @@ class PhoneFinderService : Service() {
         wakeLock = pm.newWakeLock(
             PowerManager.PARTIAL_WAKE_LOCK,
             "PhoneFinder::ListeningWakeLock"
-        ).apply { acquire(Long.MAX_VALUE) }
-
-        // SpeechRecognizer must run on a thread that has a Looper
-        speechThread = HandlerThread("SpeechRecognizerThread").apply { start() }
+        ).apply { acquire(10 * 60 * 60 * 1000L) } // 10-hour max, re-acquired on restart
 
         alarmController = AlarmController(this)
         audioEngine = AudioListenerEngine(
             context = this,
-            speechLooper = speechThread.looper,
             onPhraseDetected = ::onTriggerDetected,
             onEngineError = ::restartEngine
         )
@@ -73,7 +67,6 @@ class PhoneFinderService : Service() {
 
     private fun onTriggerDetected() {
         alarmController.soundAlarm()
-        // Broadcast so MainActivity can show the "Stop Alarm" button
         sendBroadcast(Intent("com.phonefinder.ALARM_FIRING"))
     }
 
@@ -86,15 +79,10 @@ class PhoneFinderService : Service() {
         super.onDestroy()
         audioEngine.stop()
         alarmController.stopAlarm()
-        speechThread.quitSafely()
         if (wakeLock.isHeld) wakeLock.release()
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
-
-    // -------------------------------------------------------------------------
-    // Notification helpers
-    // -------------------------------------------------------------------------
 
     private fun buildNotification(): Notification {
         val tapIntent = PendingIntent.getActivity(
@@ -122,7 +110,7 @@ class PhoneFinderService : Service() {
         val channel = NotificationChannel(
             CHANNEL_ID,
             "Phone Finder Service",
-            NotificationManager.IMPORTANCE_LOW  // LOW = shows in bar, no sound
+            NotificationManager.IMPORTANCE_LOW
         ).apply {
             description = "Persistent notification while the voice listener is active"
             setShowBadge(false)

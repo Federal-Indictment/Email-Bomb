@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         getSharedPreferences("phonefinder_prefs", MODE_PRIVATE)
     }
 
-    // Show "Stop Alarm" button when the service broadcasts that the alarm is firing
     private val alarmReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             binding.stopAlarmButton.visibility = View.VISIBLE
@@ -73,13 +72,18 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateUiState()
-        registerReceiver(alarmReceiver, IntentFilter("com.phonefinder.ALARM_FIRING"),
-            RECEIVER_NOT_EXPORTED)
+        // ContextCompat.registerReceiver works correctly on API 26 through 34+
+        ContextCompat.registerReceiver(
+            this,
+            alarmReceiver,
+            IntentFilter("com.phonefinder.ALARM_FIRING"),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
     }
 
     override fun onPause() {
         super.onPause()
-        unregisterReceiver(alarmReceiver)
+        try { unregisterReceiver(alarmReceiver) } catch (_: Exception) {}
     }
 
     private fun checkPermissionsAndEnable() {
@@ -125,7 +129,6 @@ class MainActivity : AppCompatActivity() {
     private fun promptBatteryOptimizationIfNeeded() {
         val pm = getSystemService(POWER_SERVICE) as PowerManager
         if (pm.isIgnoringBatteryOptimizations(packageName)) return
-
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.battery_opt_title))
             .setMessage(getString(R.string.battery_opt_message))

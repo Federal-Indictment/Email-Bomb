@@ -1,29 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Microphone access for AudioRecord and SpeechRecognizer -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
-    <!-- Required to call startForeground() -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
-    <!-- Required on API 34+ for a foreground service that uses the microphone -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
-
-    <!-- Auto-start after reboot -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
-    <!-- Vibration for alarm -->
     <uses-permission android:name="android.permission.VIBRATE" />
-
-    <!-- Keep CPU alive while screen is off -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <!-- Required on API 33+ to show the foreground service notification -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
-    <!-- Allow exempting from battery optimization (opens system settings) -->
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <!-- Required to set alarm stream volume so it plays over silent mode -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <uses-feature
         android:name="android.hardware.microphone"
@@ -47,24 +34,20 @@
             </intent-filter>
         </activity>
 
-        <!-- foregroundServiceType="microphone" is required on API 34+ -->
         <service
             android:name=".PhoneFinderService"
             android:exported="false"
             android:foregroundServiceType="microphone" />
 
-        <!-- Listens for device boot to restart the service -->
         <receiver
             android:name=".BootReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <!-- HTC / older Huawei devices fire this non-standard broadcast -->
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
 
-        <!-- BroadcastReceiver to stop the alarm from the main UI -->
         <receiver
             android:name=".StopAlarmReceiver"
             android:exported="false">
